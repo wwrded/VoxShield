@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+__pycache__/
+*.pyc
+.pytest_cache/
+.claude/
+.venv/
+venv/
+feedback/
+feedback_data/
+uploads/
+temp/
+*.log
+synthetic_demo_data/
+LA/
+*.egg-info/

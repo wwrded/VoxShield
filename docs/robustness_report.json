@@ -1,0 +1,97 @@
+{
+  "sample_size": 1640,
+  "bonafide": 600,
+  "spoof": 1040,
+  "deployed_threshold": 0.628052,
+  "conditions": {
+    "clean": {
+      "eer_percent": 21.0,
+      "at_deployed_threshold": {
+        "clones_accepted_percent": 46.25,
+        "genuine_refused_percent": 2.17
+      },
+      "per_attack_eer_percent": {
+        "A07": 0.5,
+        "A08": 0.0,
+        "A09": 8.75,
+        "A10": 32.5,
+        "A11": 14.17,
+        "A12": 48.67,
+        "A13": 52.33,
+        "A14": 5.0,
+        "A15": 31.25,
+        "A16": 1.25,
+        "A17": 16.25,
+        "A18": 11.0,
+        "A19": 1.0
+      }
+    },
+    "telephone": {
+      "eer_percent": 31.731,
+      "at_deployed_threshold": {
+        "clones_accepted_percent": 59.23,
+        "genuine_refused_percent": 7.17
+      },
+      "per_attack_eer_percent": {
+        "A07": 43.75,
+        "A08": 11.5,
+        "A09": 18.75,
+        "A10": 40.0,
+        "A11": 28.83,
+        "A12": 45.17,
+        "A13": 46.25,
+        "A14": 8.75,
+        "A15": 36.25,
+        "A16": 40.67,
+        "A17": 16.25,
+        "A18": 17.83,
+        "A19": 22.5
+      }
+    },
+    "g711": {
+      "eer_percent": 30.333,
+      "at_deployed_threshold": {
+        "clones_accepted_percent": 62.31,
+        "genuine_refused_percent": 5.0
+      },
+      "per_attack_eer_percent": {
+        "A07": 38.75,
+        "A08": 15.0,
+        "A09": 18.75,
+        "A10": 40.0,
+        "A11": 29.5,
+        "A12": 43.75,
+        "A13": 46.83,
+        "A14": 7.5,
+        "A15": 39.33,
+        "A16": 39.67,
+        "A17": 15.0,
+        "A18": 16.25,
+        "A19": 21.25
+      }
+    },
+    "noise_20db": {
+      "eer_percent": 34.167,
+      "at_deployed_threshold": {
+        "clones_accepted_percent": 60.87,
+        "genuine_refused_percent": 11.83
+      },
+      "per_attack_eer_percent": {
+        "A07": 31.25,
+        "A08": 27.5,
+        "A09": 28.75,
+        "A10": 41.83,
+        "A11": 38.75,
+        "A12": 43.83,
+        "A13": 61.25,
+        "A14": 10.5,
+        "A15": 45.0,
+        "A16": 40.0,
+        "A17": 16.25,
+        "A18": 17.83,
+        "A19": 20.0
+      }
+    }
+  },
+  "minutes": 1.1
+}

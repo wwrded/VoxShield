@@ -1,0 +1,163 @@
+{
+  "created_at": "2026-10-14T06:10:33+00:00",
+  "trained_at": "2026-10-14T06:10:33+00:00",
+  "dataset_name": "ASVspoof2019-LA-train + LibriSpeech dev (real and vocoded)",
+  "training_data_kind": "real_corpus",
+  "dataset_summary": {
+    "asvspoof_train": {
+      "name": "asv_train",
+      "kind": "real_corpus",
+      "usable": 25380,
+      "dropped": 0,
+      "bonafide": 2580,
+      "spoof": 22800,
+      "attacks": [
+        "A01",
+        "A02",
+        "A03",
+        "A04",
+        "A05",
+        "A06",
+        "bonafide"
+      ]
+    },
+    "librispeech_train": {
+      "name": "libri_train",
+      "kind": "real_corpus",
+      "usable": 8824,
+      "dropped": 0,
+      "bonafide": 4412,
+      "spoof": 4412,
+      "attacks": [
+        "libri_real",
+        "libri_vocoded0",
+        "libri_vocoded1"
+      ]
+    },
+    "librispeech_speakers": {
+      "train": 59,
+      "val": 14,
+      "test": 73
+    },
+    "training_clips": 34204,
+    "genuine": 6992,
+    "spoofed": 27212
+  },
+  "epochs_run": 12,
+  "decision_threshold": 0.628052,
+  "threshold_basis": "EER point on validation, ASVspoof and LibriSpeech weighted equally",
+  "preprocessing": {
+    "silence_trim_top_db": 35,
+    "short_clip_padding": "repeat",
+    "channel_augmentation": "50% of training clips"
+  },
+  "metrics": {
+    "validation": {
+      "balanced_eer_percent": 1.206
+    },
+    "evaluation": {
+      "eer": 0.21902883441344978,
+      "eer_percent": 21.903,
+      "eer_threshold": 0.09167027563301736,
+      "decision_threshold": 0.6280518174171448,
+      "roc_auc": 0.8570643196643302,
+      "accuracy": 0.5890057133231327,
+      "balanced_accuracy": 0.7613387795576783,
+      "precision_spoof": 0.995475372279496,
+      "recall_spoof": 0.5441595441595442,
+      "f1_spoof": 0.7036699661950163,
+      "false_acceptance_rate": 0.45584045584045585,
+      "false_rejection_rate": 0.021481985044187628,
+      "counts": {
+        "bonafide": 7355,
+        "spoof": 63882
+      },
+      "confusion_matrix": {
+        "true_negative_bonafide_passed": 7197,
+        "false_positive_genuine_rejected": 158,
+        "false_negative_clone_accepted": 29120,
+        "true_positive_clone_detected": 34762
+      }
+    }
+  },
+  "per_attack_eer": {
+    "A07": {
+      "eer_percent": 0.884,
+      "threshold": 0.8478,
+      "n_spoof": 4914
+    },
+    "A08": {
+      "eer_percent": 0.346,
+      "threshold": 0.9319,
+      "n_spoof": 4914
+    },
+    "A09": {
+      "eer_percent": 6.336,
+      "threshold": 0.2976,
+      "n_spoof": 4914
+    },
+    "A10": {
+      "eer_percent": 36.365,
+      "threshold": 0.0499,
+      "n_spoof": 4914
+    },
+    "A11": {
+      "eer_percent": 16.158,
+      "threshold": 0.1257,
+      "n_spoof": 4914
+    },
+    "A12": {
+      "eer_percent": 47.945,
+      "threshold": 0.0326,
+      "n_spoof": 4914
+    },
+    "A13": {
+      "eer_percent": 55.21,
+      "threshold": 0.0257,
+      "n_spoof": 4914
+    },
+    "A14": {
+      "eer_percent": 4.538,
+      "threshold": 0.381,
+      "n_spoof": 4914
+    },
+    "A15": {
+      "eer_percent": 31.774,
+      "threshold": 0.0594,
+      "n_spoof": 4914
+    },
+    "A16": {
+      "eer_percent": 1.709,
+      "threshold": 0.7006,
+      "n_spoof": 4914
+    },
+    "A17": {
+      "eer_percent": 15.405,
+      "threshold": 0.1331,
+      "n_spoof": 4914
+    },
+    "A18": {
+      "eer_percent": 13.126,
+      "threshold": 0.1584,
+      "n_spoof": 4914
+    },
+    "A19": {
+      "eer_percent": 1.18,
+      "threshold": 0.7758,
+      "n_spoof": 4914
+    }
+  },
+  "audio_frontend": {
+    "sample_rate": 16000,
+    "window_seconds": 3.0,
+    "n_mels": 128,
+    "n_fft": 1024,
+    "hop_length": 375,
+    "target_frames": 128
+  },
+  "environment": {
+    "python": "3.13.9",
+    "torch": "2.14.0+cpu",
+    "platform": "Windows-11-10.0.26200-SP0"
+  }
+}

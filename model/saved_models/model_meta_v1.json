@@ -1,0 +1,155 @@
+{
+  "created_at": "2026-09-09T10:13:58+00:00",
+  "trained_at": "2026-09-09T10:13:58+00:00",
+  "dataset_name": "ASVspoof2019-LA-train",
+  "training_data_kind": "real_corpus",
+  "dataset_summary": {
+    "name": "ASVspoof2019-LA-train",
+    "kind": "real_corpus",
+    "usable": 25380,
+    "dropped": 0,
+    "bonafide": 2580,
+    "spoof": 22800,
+    "attacks": [
+      "A01",
+      "A02",
+      "A03",
+      "A04",
+      "A05",
+      "A06"
+    ]
+  },
+  "epochs_run": 16,
+  "decision_threshold": 0.743305,
+  "threshold_basis": "Equal Error Rate operating point on the validation split",
+  "metrics": {
+    "validation": {
+      "eer": 0.0003924646781789639,
+      "eer_percent": 0.039,
+      "eer_threshold": 0.7433049669258324,
+      "decision_threshold": 0.7433049669258324,
+      "roc_auc": 0.9999995599382421,
+      "accuracy": 0.999718241829013,
+      "balanced_accuracy": 0.9996692143778104,
+      "precision_spoof": 0.9999551388452739,
+      "recall_spoof": 0.9997308934337998,
+      "f1_spoof": 0.9998430035660618,
+      "false_acceptance_rate": 0.00026910656620021526,
+      "false_rejection_rate": 0.0003924646781789639,
+      "counts": {
+        "bonafide": 2548,
+        "spoof": 22296
+      },
+      "confusion_matrix": {
+        "true_negative_bonafide_passed": 2547,
+        "false_positive_genuine_rejected": 1,
+        "false_negative_clone_accepted": 6,
+        "true_positive_clone_detected": 22290
+      }
+    },
+    "evaluation": {
+      "eer": 0.11668388591465517,
+      "eer_percent": 11.668,
+      "eer_threshold": 0.0029986586561043097,
+      "decision_threshold": 0.7433049669258324,
+      "roc_auc": 0.9524778051970438,
+      "accuracy": 0.5355363083790726,
+      "balanced_accuracy": 0.7406694129776282,
+      "precision_spoof": 0.9998052390690427,
+      "recall_spoof": 0.4821545975392129,
+      "f1_spoof": 0.6505718721287583,
+      "false_acceptance_rate": 0.517845402460787,
+      "false_rejection_rate": 0.0008157715839564922,
+      "counts": {
+        "bonafide": 7355,
+        "spoof": 63882
+      },
+      "confusion_matrix": {
+        "true_negative_bonafide_passed": 7349,
+        "false_positive_genuine_rejected": 6,
+        "false_negative_clone_accepted": 33081,
+        "true_positive_clone_detected": 30801
+      }
+    }
+  },
+  "per_attack_eer": {
+    "A07": {
+      "eer_percent": 0.061,
+      "threshold": 0.886,
+      "n_spoof": 4914
+    },
+    "A08": {
+      "eer_percent": 0.068,
+      "threshold": 0.832,
+      "n_spoof": 4914
+    },
+    "A09": {
+      "eer_percent": 3.154,
+      "threshold": 0.0186,
+      "n_spoof": 4914
+    },
+    "A10": {
+      "eer_percent": 13.899,
+      "threshold": 0.0024,
+      "n_spoof": 4914
+    },
+    "A11": {
+      "eer_percent": 7.814,
+      "threshold": 0.005,
+      "n_spoof": 4914
+    },
+    "A12": {
+      "eer_percent": 22.026,
+      "threshold": 0.0013,
+      "n_spoof": 4914
+    },
+    "A13": {
+      "eer_percent": 22.324,
+      "threshold": 0.0013,
+      "n_spoof": 4914
+    },
+    "A14": {
+      "eer_percent": 0.468,
+      "threshold": 0.2367,
+      "n_spoof": 4914
+    },
+    "A15": {
+      "eer_percent": 14.937,
+      "threshold": 0.0022,
+      "n_spoof": 4914
+    },
+    "A16": {
+      "eer_percent": 0.082,
+      "threshold": 0.7857,
+      "n_spoof": 4914
+    },
+    "A17": {
+      "eer_percent": 21.388,
+      "threshold": 0.0014,
+      "n_spoof": 4914
+    },
+    "A18": {
+      "eer_percent": 10.094,
+      "threshold": 0.0036,
+      "n_spoof": 4914
+    },
+    "A19": {
+      "eer_percent": 0.544,
+      "threshold": 0.2251,
+      "n_spoof": 4914
+    }
+  },
+  "audio_frontend": {
+    "sample_rate": 16000,
+    "window_seconds": 3.0,
+    "n_mels": 128,
+    "n_fft": 1024,
+    "hop_length": 375,
+    "target_frames": 128
+  },
+  "environment": {
+    "python": "3.13.9",
+    "torch": "2.14.0+cpu",
+    "platform": "Windows-11-10.0.26200-SP0"
+  }
+}

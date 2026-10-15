@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VoxShield - Synthetic Voice Detection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="nav-brand">
+      <div class="brand-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+          <line x1="12" y1="19" x2="12" y2="22"></line>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-name">VoxShield</span>
+        <span class="brand-badge">Synthetic Voice Risk Engine</span>
+      </div>
+    </div>
+
+    <div class="nav-status">
+      <span class="status-indicator" id="statusDot"></span>
+      <span class="status-text" id="statusText">Connecting&hellip;</span>
+    </div>
+  </header>
+
+  <!-- Model provenance banner. Shown whenever the loaded checkpoint has not
+       been trained on a real speech corpus, so that no one reads a demo score
+       as a detection result. -->
+  <div class="model-banner" id="modelBanner" hidden>
+    <strong id="modelBannerTitle">Model not validated</strong>
+    <span id="modelBannerText"></span>
+  </div>
+
+  <main class="dashboard-container">
+
+    <section class="panel input-panel">
+      <div class="panel-header">
+        <h2>Audio Input</h2>
+        <p>Upload a recording, record from the microphone, or run a bundled test signal.</p>
+      </div>
+
+      <div class="presets-section">
+        <label class="section-label" for="profileSelect">Deployment profile</label>
+        <select id="profileSelect" class="profile-select"></select>
+        <p class="profile-hint" id="profileHint"></p>
+      </div>
+
+      <div class="presets-section">
+        <label class="section-label">Bundled test signals</label>
+        <div class="preset-buttons" id="presetButtons"></div>
+        <p class="upload-sub-text" id="presetNote"></p>
+      </div>
+
+      <div class="upload-zone" id="dropZone">
+        <input type="file" id="audioFileInput" accept=".wav,.flac,.ogg,.mp3,.m4a,.webm" class="file-input">
+        <div class="upload-content">
+          <div class="upload-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+          </div>
+          <p class="upload-main-text">Drag &amp; drop audio here, or <span class="browse-link">browse</span></p>
+          <p class="upload-sub-text" id="limitsText">WAV, FLAC, OGG, MP3, M4A</p>
+        </div>
+      </div>
+
+      <div class="mic-section">
+        <button type="button" class="mic-btn" id="micBtn">
+          <svg class="mic-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+            <line x1="12" y1="19" x2="12" y2="22"></line>
+          </svg>
+          <span id="micBtnText">Record 5 seconds</span>
+        </button>
+        <span class="mic-status" id="micTimer"></span>
+      </div>
+
+      <div class="playback-card" id="playbackCard" style="display:none;">
+        <div class="playback-info">
+          <span class="file-name" id="currentFileName">audio.wav</span>
+          <audio id="audioElement" controls class="audio-control"></audio>
+        </div>
+        <canvas id="waveformCanvas" class="waveform-canvas" width="400" height="60"></canvas>
+      </div>
+
+      <button type="button" class="analyze-btn" id="analyzeBtn" disabled>
+        <span id="analyzeBtnText">Analyse recording</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+
+      <p class="error-text" id="errorText" hidden></p>
+    </section>
+
+    <section class="panel results-panel">
+      <div class="panel-header">
+        <h2>Risk Assessment</h2>
+        <div class="latency-badge" id="latencyBadge">Latency: -- ms</div>
+      </div>
+
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <p>Nothing analysed yet. Choose an input on the left to begin.</p>
+      </div>
+
+      <div class="results-content" id="resultsContent" style="display:none;">
+
+        <div class="verdict-banner" id="verdictBanner">
+          <div class="verdict-details">
+            <span class="verdict-title" id="verdictTitle"></span>
+            <span class="verdict-subtitle" id="verdictSubtitle"></span>
+          </div>
+          <div class="action-tag" id="actionTag"></div>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-card risk-card">
+            <span class="metric-label">Spoof likelihood</span>
+            <div class="risk-gauge-wrap">
+              <span class="risk-value" id="riskValue">--</span>
+              <span class="risk-tier-label" id="riskTier"></span>
+            </div>
+            <div class="risk-bar-container">
+              <div class="risk-bar-fill" id="riskBarFill" style="width:0%"></div>
+            </div>
+            <div class="stat-row">
+              <span class="stat-name">Decision threshold</span>
+              <span class="stat-value" id="thresholdValue">--</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-name">Distance from threshold</span>
+              <span class="stat-value" id="marginValue">--</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-name">Scored by</span>
+              <span class="stat-value" id="scorerValue">--</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <span class="metric-label">Recording</span>
+            <div class="stat-row"><span class="stat-name">Duration</span><span class="stat-value" id="durationValue">--</span></div>
+            <div class="stat-row"><span class="stat-name">Windows scored</span><span class="stat-value" id="windowsValue">--</span></div>
+            <div class="stat-row"><span class="stat-name">Peak window</span><span class="stat-value" id="peakWindowValue">--</span></div>
+            <span class="metric-label" style="margin-top:12px;display:block;">Per-window likelihood</span>
+            <canvas id="windowCanvas" class="waveform-canvas" width="380" height="54"></canvas>
+          </div>
+        </div>
+
+        <div class="recommendation-card" id="recommendationCard">
+          <div class="rec-header" id="recHeader">Recommended action</div>
+          <div class="rec-body" id="recBody"></div>
+        </div>
+
+        <div class="spectrogram-section">
+          <div class="section-title-row"><span class="section-label">Log-Mel spectrogram (first window)</span></div>
+          <div class="spectrogram-container">
+            <img id="spectrogramImg" class="spectrogram-img" alt="Log-Mel spectrogram of the analysed audio">
+          </div>
+        </div>
+
+        <div class="spectrogram-section">
+          <div class="section-title-row"><span class="section-label">CIA impact</span></div>
+          <div class="cia-pills">
+            <div class="cia-pill"><strong>Confidentiality</strong><span id="ciaC"></span></div>
+            <div class="cia-pill"><strong>Integrity</strong><span id="ciaI"></span></div>
+            <div class="cia-pill"><strong>Availability</strong><span id="ciaA"></span></div>
+          </div>
+        </div>
+
+        <div class="spectrogram-section">
+          <div class="section-title-row"><span class="section-label">Acoustic evidence</span></div>
+          <div class="feature-info" id="evidenceList"></div>
+        </div>
+
+        <div class="caveat-box" id="caveatBox" hidden></div>
+
+        <div class="feedback-card" id="feedbackCard" hidden>
+          <div class="section-label">Was this result right?</div>
+          <p class="feedback-help">If you know the true answer, send it back. Corrections wait in a review queue and are only learned when an administrator runs a fine-tune that is checked against held-out data.</p>
+          <label class="feedback-consent"><input type="checkbox" id="feedbackConsent"> The speaker agreed that this recording may be kept to improve the model</label>
+          <input type="password" id="feedbackToken" class="feedback-token" placeholder="Feedback token" autocomplete="off" hidden>
+          <div class="feedback-buttons">
+            <button type="button" class="preset-btn" id="feedbackGenuine">It was a real voice</button>
+            <button type="button" class="preset-btn" id="feedbackSynthetic">It was synthetic</button>
+          </div>
+          <p class="feedback-status" id="feedbackStatus" role="status"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    VoxShield &middot; Information Security Project &middot; Sri Lanka Institute of Information Technology
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
